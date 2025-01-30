@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"strconv"
 	"testing"
 
 	"github.com/devfullcycle/20-CleanArch/internal/entity"
@@ -48,4 +49,23 @@ func (suite *OrderRepositoryTestSuite) TestGivenAnOrder_WhenSave_ThenShouldSaveO
 	suite.Equal(order.Price, orderResult.Price)
 	suite.Equal(order.Tax, orderResult.Tax)
 	suite.Equal(order.FinalPrice, orderResult.FinalPrice)
+}
+
+func (suite *OrderRepositoryTestSuite) TestGivenManyOrders_WhenRequested_ThenShouldReturnsOrders() {
+
+	var limit = 10
+	repo := NewOrderRepository(suite.Db)
+
+	for i := 0; i < limit; i++ {
+		order, err := entity.NewOrder(strconv.Itoa(i), float64(1+i)*10.0, float64(1+i))
+		suite.NoError(err)
+		suite.NoError(order.CalculateFinalPrice())
+		err = repo.Save(order)
+		suite.NoError(err)
+	}
+
+	rows, err := repo.ListOrders()
+
+	suite.NoError(err)
+	suite.Equal(limit, len(rows))
 }
