@@ -1,3 +1,5 @@
+go version: 1.23.0
+
 Ports:
 Web server on port :8000
 gRPC on port 50051
