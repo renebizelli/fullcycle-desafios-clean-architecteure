@@ -2,7 +2,13 @@ POST http://localhost:8000/order
 Content-Type: application/json
 
 {
-    "id" : "5",
-    "price" : 500,
+    "id" : "10",
+    "price" : 10500,
     "tax" : 50
 }
+
+###
+
+GET http://localhost:8000/order
+Accept: application/json
+Content-Type: application/json
