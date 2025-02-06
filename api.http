@@ -12,3 +12,7 @@ Content-Type: application/json
 GET http://localhost:8000/order
 Accept: application/json
 Content-Type: application/json
+
+###
+
+GET http://localhost:8000/

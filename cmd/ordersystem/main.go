@@ -23,6 +23,18 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+// func main() {
+
+// 	configs, err := configs.LoadConfig("./")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { fmt.Fprintf(w, "Hello World!") })
+
+// 	http.ListenAndServe(configs.WebServerPort, nil)
+// }
+
 func main() {
 	configs, err := configs.LoadConfig(".")
 	if err != nil {
