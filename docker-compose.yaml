@@ -11,10 +11,11 @@ services:
       - 50051:50051
       - 8000:8000
     depends_on:
-      mysql:
-        condition: service_healthy  
-      rabbitmq:
-        condition: service_healthy  
+      - mysql
+      - rabbitmq
+    networks:
+      - desafio_network
+        # condition: service_healthy  
   mysql:
     image: mysql:5.7
     container_name: mysql
@@ -33,7 +34,8 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
-
+    networks:
+      - desafio_network
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -51,5 +53,11 @@ services:
       retries: 3
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - desafio_network
 volumes:
   rabbitmq_data:
+
+networks:
+  desafio_network:
+    driver: bridge
