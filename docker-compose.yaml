@@ -49,7 +49,7 @@ services:
       #test: ["CMD-SHELL", "mysqladmin status -u$$MYSQL_ROOT_PASSWORD -p$$MYSQL_PASSWORD --protocol=TCP"]
       interval: 10s
       timeout: 10s
-      retries: 3
+      retries: 5
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -65,7 +65,7 @@ services:
       test: rabbitmq-diagnostics -q ping
       interval: 10s
       timeout: 10s
-      retries: 3
+      retries: 5
     networks:   
       - rabbit
 networks:
