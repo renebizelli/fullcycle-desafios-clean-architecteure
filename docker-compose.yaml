@@ -15,10 +15,26 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy  
+    networks:
+      - rabbit
+      - mysqldb
+  migration:
+    image: migrate/migrate
+    networks:
+      - default
+      - mysqldb
+    volumes:
+      - ./sql/migrations:/migrations
+    command: -path=/migrations/ -database='mysql://root:root@tcp(mysql:3306)/orders' up
+    depends_on:
+      mysql:
+        condition: service_healthy        
   mysql:
     image: mysql:5.7
     container_name: mysql
     restart: always
+    networks:
+      - mysqldb
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: orders
@@ -27,8 +43,9 @@ services:
       - 3306:3306
     volumes:
       - .docker/mysql:/var/lib/mysql
+      - ./sql/migrations:/docker-entrypoint-initdb.d
     healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_ROOT_PASSWORD --password=$$MYSQL_PASSWORD
+      test: mysqladmin ping -h mysql -u $$MYSQL_ROOT_PASSWORD --password=$$MYSQL_PASSWORD
       #test: ["CMD-SHELL", "mysqladmin status -u$$MYSQL_ROOT_PASSWORD -p$$MYSQL_PASSWORD --protocol=TCP"]
       interval: 10s
       timeout: 10s
@@ -49,3 +66,8 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
+    networks:   
+      - rabbit
+networks:
+  mysqldb:
+  rabbit:

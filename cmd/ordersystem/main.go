@@ -48,6 +48,7 @@ func main() {
 	defer db.Close()
 
 	rabbitMQChannel := getRabbitMQChannel()
+	defer rabbitMQChannel.Close()
 
 	eventDispatcher := events.NewEventDispatcher()
 	eventDispatcher.Register("OrderCreated", &handler.OrderCreatedHandler{
@@ -61,6 +62,7 @@ func main() {
 	webOrderHandler := NewWebOrderHandler(db, eventDispatcher)
 	webserver.AddPostHandler("/order", webOrderHandler.Create)
 	webserver.AddGetHandler("/order", webOrderHandler.List)
+
 	fmt.Println("Starting web server on port", configs.WebServerPort)
 	go webserver.Start()
 

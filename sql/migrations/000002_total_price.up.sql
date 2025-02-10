@@ -1,1 +1,0 @@
-ALTER TABLE orders CHANGE finalPrice final_price decimal;
