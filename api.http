@@ -2,9 +2,9 @@ POST http://localhost:8000/order
 Content-Type: application/json
 
 {
-    "id" : "10",
-    "price" : 10500,
-    "tax" : 50
+    "id" : "xxx",
+    "price" : 300.33,
+    "tax" : 0.5
 }
 
 ###
